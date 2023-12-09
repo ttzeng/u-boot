@@ -14,6 +14,7 @@ mtd-$(CONFIG_FLASH_CFI_LEGACY) += jedec_flash.o
 mtd-$(CONFIG_STM32_FLASH) += stm32_flash.o
 mtd-$(CONFIG_RENESAS_RPC_HF) += renesas_rpc_hf.o
 mtd-$(CONFIG_HBMC_AM654) += hbmc-am654.o
+mtd-$(CONFIG_GENERIC_FLASH_DRIVER) += generic_flash.o
 
 # U-Boot build
 ifeq ($(CONFIG_SPL_BUILD)$(CONFIG_TPL_BUILD),)

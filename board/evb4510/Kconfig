@@ -1,0 +1,39 @@
+if TARGET_EVB4510
+
+config SYS_BOARD
+    string
+    default "evb4510"
+
+config SYS_SOC
+    string
+    default "s3c4510b"
+
+config SYS_CONFIG_NAME
+    string
+    default "evb4510"
+
+choice
+    prompt "Select the S3C4510 platform flavor"
+    default PLATFORM_EVALUATOR7T
+
+config PLATFORM_EVALUATOR7T
+    prompt "Support the ARM Evaluator-7T board"
+    bool
+
+config PLATFORM_NETSTART
+    prompt "Support the NET-Start! board"
+    bool
+endchoice
+
+config MONITOR_IS_IN_RAM
+    bool "U-Boot is loaded in to RAM by a pre-loader"
+
+config SYS_MALLOC_LEN
+    hex
+    default 0x18000 if PLATFORM_EVALUATOR7T
+    default 0x20000 if PLATFORM_NETSTART
+
+config GENERIC_FLASH_DRIVER
+    def_bool y
+
+endif

@@ -2088,6 +2088,14 @@ config ARCH_GXP
 	select OF_CONTROL
 	imply CMD_DM
 
+config TARGET_EVB4510
+	bool "Support Samsung S3C4510b Boards"
+	select CPU_ARM720T
+	select SYS_ICACHE_OFF
+	select SYS_DCACHE_OFF
+	select BOARD_EARLY_INIT_F
+	select S3C4510_SERIAL
+
 endchoice
 
 config SUPPORT_PASSING_ATAGS
@@ -2345,6 +2353,8 @@ source "board/vscom/baltos/Kconfig"
 source "board/phytium/durian/Kconfig"
 source "board/phytium/pomelo/Kconfig"
 source "board/xen/xenguest_arm64/Kconfig"
+
+source "board/evb4510/Kconfig"
 
 source "arch/arm/Kconfig.debug"
 

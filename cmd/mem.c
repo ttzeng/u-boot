@@ -35,7 +35,7 @@
 DECLARE_GLOBAL_DATA_PTR;
 
 /* Create a compile-time value */
-#ifdef MEM_SUPPORT_64BIT_DATA
+#if MEM_SUPPORT_64BIT_DATA
 #define SUPPORT_64BIT_DATA 1
 #define HELP_Q ", .q"
 #else

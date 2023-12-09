@@ -93,6 +93,7 @@ machine-$(CONFIG_ARCH_VERSAL_NET)	+= versal-net
 machine-$(CONFIG_ARCH_ZYNQ)		+= zynq
 machine-$(CONFIG_ARCH_ZYNQMP)		+= zynqmp
 machine-$(CONFIG_ARCH_ZYNQMP_R5)	+= zynqmp-r5
+machine-$(CONFIG_TARGET_EVB4510)	+= s3c4510b
 
 machine-$(CONFIG_MACH_IMX)		+= imx
 
