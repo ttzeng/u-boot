@@ -651,6 +651,11 @@ xyzModem_stream_close (int *err)
      xyz.crc_mode ? "CRC" : "Cksum", xyz.total_SOH, xyz.total_STX,
      xyz.total_CAN, xyz.total_retries));
   ZM_DEBUG (zm_flush ());
+#if CONFIG_WORKAROUND_FOR_ARM7DI
+  /* The gcc 10.3.1 fires 'strh' instruction which which is not supported
+     by legacy non-thumb cores*/
+  xyz.at_eof = false;
+#endif
 }
 
 /* Need to be able to clean out the input buffer, so have to take the */

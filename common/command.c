@@ -471,22 +471,21 @@ int cmd_get_data_size(char* arg, int default_size)
 	 */
 	int len = strlen(arg);
 	if (len > 2 && arg[len-2] == '.') {
-		switch (arg[len-1]) {
-		case 'b':
+		/* Rewrite the 'switch' statement on char as gcc fires 'ldrsb' thumb
+		   instruction which is not supported by legacy non-thumb cores */
+		int c = arg[len-1];
+		if (c == 'b')
 			return 1;
-		case 'w':
+		else if (c == 'w')
 			return 2;
-		case 'l':
+		else if (c == 'l')
 			return 4;
-		case 's':
+		else if (c == 's')
 			return CMD_DATA_SIZE_STR;
-		case 'q':
+		else if (c == 'q')
 			if (MEM_SUPPORT_64BIT_DATA)
 				return 8;
-			/* no break */
-		default:
-			return CMD_DATA_SIZE_ERR;
-		}
+		return CMD_DATA_SIZE_ERR;
 	}
 	return default_size;
 }

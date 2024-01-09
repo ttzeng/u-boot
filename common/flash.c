@@ -27,7 +27,7 @@ void
 flash_protect(int flag, ulong from, ulong to, flash_info_t *info)
 {
 	ulong b_end;
-	short s_end;
+	int s_end;
 	int i;
 
 	/* Do nothing if input data is bad. */
@@ -140,7 +140,7 @@ flash_write(char *src, ulong addr, ulong cnt)
 
 	for (info = info_first; info <= info_last; ++info) {
 		ulong b_end = info->start[0] + info->size;	/* bank end addr */
-		short s_end = info->sector_count - 1;
+		int s_end = info->sector_count - 1;
 		for (i=0; i<info->sector_count; ++i) {
 			ulong e_addr = (i == s_end) ? b_end : info->start[i + 1];
 

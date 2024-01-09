@@ -13,7 +13,7 @@
 
 typedef struct {
 	ulong	size;			/* total bank size in bytes		*/
-	ushort	sector_count;		/* number of erase units		*/
+	int	sector_count;		/* number of erase units		*/
 	ulong	flash_id;		/* combined device & manufacturer code	*/
 	ulong	start[CONFIG_SYS_MAX_FLASH_SECT];   /* virtual sector start address */
 	uchar	protect[CONFIG_SYS_MAX_FLASH_SECT]; /* sector protection status	*/

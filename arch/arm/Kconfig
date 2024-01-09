@@ -284,6 +284,14 @@ config ARM_CORTEX_A8_CVE_2017_5715
 config ARM_CORTEX_A15_CVE_2017_5715
 	bool
 
+config WORKAROUND_FOR_ARM7DI
+	bool
+
+config CPU_ARM7DI
+	bool
+	select SYS_CACHE_SHIFT_5
+	imply WORKAROUND_FOR_ARM7DI
+
 config CPU_ARM720T
 	bool
 	select SYS_CACHE_SHIFT_5
@@ -340,6 +348,7 @@ config CPU_V7R
 	select SYS_CACHE_SHIFT_6
 
 config SYS_CPU
+	default "arm720t" if CPU_ARM7DI
 	default "arm720t" if CPU_ARM720T
 	default "arm920t" if CPU_ARM920T
 	default "arm926ejs" if CPU_ARM926EJS
@@ -353,6 +362,7 @@ config SYS_CPU
 
 config SYS_ARM_ARCH
 	int
+	default 4 if CPU_ARM7DI
 	default 4 if CPU_ARM720T
 	default 4 if CPU_ARM920T
 	default 5 if CPU_ARM926EJS
@@ -2088,6 +2098,14 @@ config ARCH_GXP
 	select OF_CONTROL
 	imply CMD_DM
 
+config TARGET_ARMEVB1
+	bool "Support ARM AEB-1 Evaluation Board"
+	select CPU_ARM7DI
+	select SYS_ICACHE_OFF
+	select SYS_DCACHE_OFF
+	select BOARD_EARLY_INIT_F
+	select LH77790_SERIAL
+
 config TARGET_EVB4510
 	bool "Support Samsung S3C4510b Boards"
 	select CPU_ARM720T
@@ -2354,6 +2372,7 @@ source "board/phytium/durian/Kconfig"
 source "board/phytium/pomelo/Kconfig"
 source "board/xen/xenguest_arm64/Kconfig"
 
+source "board/armevb1/Kconfig"
 source "board/evb4510/Kconfig"
 
 source "arch/arm/Kconfig.debug"

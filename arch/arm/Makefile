@@ -6,6 +6,7 @@ CONFIG_CPU_ARM720T=y
 endif
 
 # This selects which instruction set is used.
+arch-$(CONFIG_CPU_ARM7DI)	=-march=armv4
 arch-$(CONFIG_CPU_ARM720T)	=-march=armv4
 arch-$(CONFIG_CPU_ARM920T)	=-march=armv4t
 arch-$(CONFIG_CPU_ARM926EJS)	=-march=armv5te
@@ -34,6 +35,7 @@ endif
 arch-y := $(arch-y)
 
 # This selects how we optimise for the processor.
+tune-$(CONFIG_CPU_ARM7DI)	=
 tune-$(CONFIG_CPU_ARM720T)	=-mtune=arm7tdmi
 tune-$(CONFIG_CPU_ARM920T)	=
 tune-$(CONFIG_CPU_ARM926EJS)	=
@@ -93,6 +95,7 @@ machine-$(CONFIG_ARCH_VERSAL_NET)	+= versal-net
 machine-$(CONFIG_ARCH_ZYNQ)		+= zynq
 machine-$(CONFIG_ARCH_ZYNQMP)		+= zynqmp
 machine-$(CONFIG_ARCH_ZYNQMP_R5)	+= zynqmp-r5
+machine-$(CONFIG_TARGET_ARMEVB1)	+= lh77790
 machine-$(CONFIG_TARGET_EVB4510)	+= s3c4510b
 
 machine-$(CONFIG_MACH_IMX)		+= imx

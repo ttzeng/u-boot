@@ -1,0 +1,18 @@
+if TARGET_ARMEVB1
+
+config SYS_BOARD
+    string
+    default "armevb1"
+
+config SYS_SOC
+    string
+    default "lh77790"
+
+config SYS_CONFIG_NAME
+    string
+    default "armevb1"
+
+config GENERIC_FLASH_DRIVER
+    def_bool y
+
+endif

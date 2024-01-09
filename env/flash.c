@@ -244,13 +244,8 @@ static int env_flash_save(void)
 
 	up_data = end_addr + 1 - ((long)flash_addr + CONFIG_ENV_SIZE);
 	debug("Data to save 0x%lx\n", up_data);
-	if (up_data) {
-		saved_data = malloc(up_data);
-		if (saved_data == NULL) {
-			printf("Unable to save the rest of sector (%ld)\n",
-				up_data);
-			goto done;
-		}
+	saved_data = malloc(up_data);
+	if (saved_data != NULL) {
 		memcpy(saved_data,
 			(void *)((long)flash_addr + CONFIG_ENV_SIZE), up_data);
 		debug("Data (start 0x%lx, len 0x%lx) saved at 0x%lx\n",
@@ -279,7 +274,7 @@ static int env_flash_save(void)
 		goto perror;
 
 #if CONFIG_ENV_SECT_SIZE > CONFIG_ENV_SIZE
-	if (up_data) {	/* restore the rest of sector */
+	if (saved_data != NULL) {	/* restore the rest of sector */
 		debug("Restoring the rest of data to 0x%lx len 0x%lx\n",
 			(ulong)flash_addr + CONFIG_ENV_SIZE, up_data);
 		if (flash_write(saved_data,

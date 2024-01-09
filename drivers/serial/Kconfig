@@ -232,6 +232,7 @@ choice
 	prompt "Select which UART will provide the debug UART"
 	depends on DEBUG_UART
 	default DEBUG_SBI_CONSOLE if RISCV_SMODE
+	default DEBUG_UART_LH77790 if LH77790_SERIAL
 	default DEBUG_UART_S3C4510 if S3C4510_SERIAL
 	default DEBUG_UART_NS16550
 
@@ -494,6 +495,10 @@ config DEBUG_UART_MT7620
 	  driver will be available until the real driver model serial is
 	  running.
 
+config DEBUG_UART_LH77790
+	bool "Debug UART using the LH77790 serial driver"
+	depends on LH77790_SERIAL
+
 config DEBUG_UART_S3C4510
 	bool "Debug UART using the S3C4510 serial driver"
 	depends on S3C4510_SERIAL
@@ -507,6 +512,7 @@ config DEBUG_UART_BASE
 	default 0x0 if DEBUG_UART_SANDBOX
 	default 0xff000000 if DEBUG_UART_ZYNQ && ARCH_ZYNQMP
 	default 0xe0000000 if DEBUG_UART_ZYNQ && ARCH_ZYNQ
+	default 0xffff0400 if DEBUG_UART_LH77790
 	default 0x03ffd000 if DEBUG_UART_S3C4510
 	help
 	  This is the base address of your UART for memory-mapped UARTs.
@@ -536,6 +542,7 @@ config DEBUG_UART_CLOCK
 	default 0 if DEBUG_MVEBU_A3700_UART
 	default 100000000 if DEBUG_UART_ZYNQ && ARCH_ZYNQMP
 	default 50000000 if DEBUG_UART_ZYNQ && ARCH_ZYNQ
+	default 0 if DEBUG_UART_LH77790
 	default 0 if DEBUG_UART_S3C4510
 	help
 	  The UART input clock determines the speed of the internal UART
@@ -1163,6 +1170,9 @@ config SYS_SDMR
 	hex "SDMR Value"
 	depends on MPC8XX_CONS
 	default 0x0
+
+config LH77790_SERIAL
+	bool "UART driver on Sharp LH77790 SoCs"
 
 config S3C4510_SERIAL
 	bool "UART driver on S3C4510 SoCs"

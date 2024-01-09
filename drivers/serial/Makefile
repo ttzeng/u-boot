@@ -61,6 +61,7 @@ obj-$(CONFIG_HTIF_CONSOLE) += serial_htif.o
 obj-$(CONFIG_SIFIVE_SERIAL) += serial_sifive.o
 obj-$(CONFIG_XEN_SERIAL) += serial_xen.o
 obj-$(CONFIG_S5P4418_PL011_SERIAL) += serial_s5p4418_pl011.o
+obj-$(CONFIG_LH77790_SERIAL) += serial_lh77790.o
 obj-$(CONFIG_S3C4510_SERIAL) += serial_s3c4510b.o
 
 ifndef CONFIG_SPL_BUILD
