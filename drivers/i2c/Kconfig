@@ -637,6 +637,12 @@ config SYS_I2C_S3C24X0
 	help
 	  Support for Samsung I2C controller as Samsung SoCs.
 
+config SYS_I2C_S3C4510
+	bool "Samsung S3C4510b I2C bus controller driver"
+	depends on TARGET_EVB4510
+	help
+	  Support for Samsung S3C4510 I2C bus controller.
+
 config SYS_I2C_STM32F7
 	bool "STMicroelectronics STM32F7 I2C support"
 	depends on (STM32F7 || STM32H7 || ARCH_STM32MP) && DM_I2C

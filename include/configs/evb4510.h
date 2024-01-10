@@ -24,6 +24,7 @@
   #define CFG_SYS_FLASH_BASE    0x05000000  /* Flash Bank #1                  */
   #define CFG_SYS_FLASH_SIZE    0x00200000  /*   2 MB (one chip,16bit access) */
   #define CFG_SYS_FLASH_STARTS  { CFG_SYS_FLASH_BASE }
+  #define CFG_SYS_I2C_SPEED     100000      /* 100 kHz */
 #endif
 
 #endif

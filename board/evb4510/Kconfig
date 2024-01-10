@@ -23,6 +23,10 @@ config PLATFORM_EVALUATOR7T
 config PLATFORM_NETSTART
     prompt "Support the NET-Start! board"
     bool
+    select SYS_I2C_S3C4510
+    select RTC_DS1672
+    select CMD_DATE
+    select CMD_I2C
 endchoice
 
 config MONITOR_IS_IN_RAM

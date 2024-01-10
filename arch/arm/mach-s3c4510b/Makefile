@@ -7,3 +7,4 @@
 # Wolfgang Denk, DENX Software Engineering, wd@denx.de.
 
 obj-y += cpu.o timer.o
+obj-$(CONFIG_SYS_I2C_S3C4510) += i2c.o
