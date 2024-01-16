@@ -645,6 +645,12 @@ config RTL8169
 	  This driver supports Realtek 8169 series gigabit ethernet family of
 	  PCI/PCIe chipsets/adapters.
 
+config S3C4510_ETH
+	bool "Samsung S3C4510b Ethernet controller driver"
+	depends on TARGET_EVB4510
+	help
+	  This driver supports the Ethernet controller on Samsung S3C4510b SoC.
+
 config SJA1105
 	bool "NXP SJA1105 Ethernet switch family driver"
 	depends on DM_DSA && DM_SPI
