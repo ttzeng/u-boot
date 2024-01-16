@@ -7,7 +7,7 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
-static int serial_flush_input(UART *uart)
+static inline int serial_flush_input(UART *uart)
 {
     volatile u32 tmp;
     while(uart->m_stat.bf.rxReady) {
@@ -16,7 +16,7 @@ static int serial_flush_input(UART *uart)
     return 0;
 }
 
-static int serial_flush_output(UART *uart)
+static inline int serial_flush_output(UART *uart)
 {
     while(!uart->m_stat.bf.txBufEmpty);
     return 0;
@@ -70,7 +70,13 @@ static void serial_config_baudrate(UART *uart, unsigned baudrate)
     uart->m_baudClk = 0x0;
 }
 
-static UART *console_uart = (UART*)(CONFIG_CONS_INDEX? UART1_BASE : UART0_BASE);
+static inline void serial_printch(UART *uart, const char c)
+{
+    while (!uart->m_stat.bf.txBufEmpty);
+    uart->m_tx = c;
+}
+
+static UART *console_uart = (UART*)((CONFIG_CONS_INDEX > 1)? UART1_BASE : UART0_BASE);
 
 #ifndef CONFIG_DM_SERIAL
 static void s3c4510b_serial_setbrg(void)
@@ -86,8 +92,7 @@ static int s3c4510b_serial_init(void)
 
 static void s3c4510b_serial_putc(const char c)
 {
-    while(!console_uart->m_stat.bf.txBufEmpty);
-    console_uart->m_tx = c;
+    serial_printch(console_uart, c);
     if (c=='\n')
         serial_putc('\r');
 }
@@ -130,6 +135,49 @@ struct serial_device *default_serial_console(void)
 {
     return &s3c4510b_serial_drv;
 }
+#else
+static int s3c4510b_serial_setbrg(struct udevice *dev, int baudrate)
+{
+    serial_config_baudrate(console_uart, baudrate);
+    return 0;
+}
+
+static int s3c4510b_serial_putc(struct udevice *dev, const char ch)
+{
+    serial_printch(console_uart, ch);
+    return 0;
+}
+
+static int s3c4510b_serial_getc(struct udevice *dev)
+{
+    return (console_uart->m_stat.bf.rxReady)?
+            console_uart->m_rx & 0xFF : -EAGAIN;
+}
+
+static int s3c4510b_serial_pending(struct udevice *dev, bool input)
+{
+    return (input && console_uart->m_stat.bf.rxReady)? 1 : 0;
+}
+
+static const struct dm_serial_ops s3c4510b_serial_ops = {
+    .setbrg     = s3c4510b_serial_setbrg,
+    .putc       = s3c4510b_serial_putc,
+    .getc       = s3c4510b_serial_getc,
+    .pending    = s3c4510b_serial_pending,
+};
+
+U_BOOT_DRIVER(s3c4510_serial) = {
+    .name       = "s3c4510_serial",
+    .id         = UCLASS_SERIAL,
+    .ops        = &s3c4510b_serial_ops,
+    .flags      = DM_FLAG_PRE_RELOC,
+};
+
+#if !CONFIG_IS_ENABLED(OF_CONTROL)
+U_BOOT_DRVINFO(s3c4510_serial) = {
+    .name = "s3c4510_serial",
+};
+#endif
 #endif
 
 #if defined(CONFIG_DEBUG_UART_S3C4510)

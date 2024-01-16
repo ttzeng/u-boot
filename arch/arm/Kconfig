@@ -2112,6 +2112,7 @@ config TARGET_EVB4510
 	select SYS_ICACHE_OFF
 	select SYS_DCACHE_OFF
 	select BOARD_EARLY_INIT_F
+	select DM_SERIAL
 	select S3C4510_SERIAL
 
 endchoice
