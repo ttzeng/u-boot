@@ -1,4 +1,5 @@
 #include <common.h>
+#include <dm.h>
 #include <asm/io.h>
 #include <asm/global_data.h>
 #include <serial.h>
@@ -24,6 +25,12 @@ static void lh77790_config_baudrate(volatile u8* base, unsigned baudrate)
 }
 
 static volatile u8 *uart_base = (u8*)UART1_BASE;
+
+static inline void lh77790_printch(volatile u8* base, const char c)
+{
+    while (!(in_8(base + OFS_LSR) & LSR_TEMT));
+    out_8(base + OFS_THR, c);
+}
 
 #ifndef CONFIG_DM_SERIAL
 static void lh77790_serial_setbrg(void)
@@ -52,8 +59,7 @@ static int lh77790_serial_getc(void)
 
 static void lh77790_serial_putc(const char c)
 {
-    while (!(in_8(uart_base + OFS_LSR) & LSR_TEMT));
-    out_8(uart_base + OFS_THR, c);
+    lh77790_printch(uart_base, c);
     if (c == '\n')
         serial_putc('\r');
 }
@@ -79,6 +85,57 @@ struct serial_device *default_serial_console(void)
 {
     return &lh77790_serial_drv;
 }
+#else
+static int lh77790_serial_probe(struct udevice *dev)
+{
+    uart_base = (u8 *)UART1_BASE;
+    out_32(U1CCR, 1);
+    return 0;
+}
+
+static int lh77790_serial_setbrg(struct udevice *dev, int baudrate)
+{
+    lh77790_config_baudrate(uart_base, baudrate);
+    return 0;
+}
+
+static int lh77790_serial_putc(struct udevice *dev, const char ch)
+{
+    lh77790_printch(uart_base, ch);
+    return 0;
+}
+
+static int lh77790_serial_getc(struct udevice *dev)
+{
+    return (in_8(uart_base + OFS_LSR) & LSR_DR)?
+           in_8(uart_base + OFS_RBR) : -EAGAIN;
+}
+
+static int lh77790_serial_pending(struct udevice *dev, bool input)
+{
+    return (input && (in_8(uart_base + OFS_LSR) & LSR_DR))? 1 : 0;
+}
+
+static const struct dm_serial_ops lh77790_serial_ops = {
+    .setbrg     = lh77790_serial_setbrg,
+    .putc       = lh77790_serial_putc,
+    .getc       = lh77790_serial_getc,
+    .pending    = lh77790_serial_pending,
+};
+
+U_BOOT_DRIVER(lh77790_serial) = {
+    .name       = "lh77790_serial",
+    .id         = UCLASS_SERIAL,
+    .probe      = lh77790_serial_probe,
+    .ops        = &lh77790_serial_ops,
+    .flags      = DM_FLAG_PRE_RELOC,
+};
+
+#if !CONFIG_IS_ENABLED(OF_CONTROL)
+U_BOOT_DRVINFO(lh77790_serial) = {
+    .name = "lh77790_serial",
+};
+#endif
 #endif
 
 #if defined(CONFIG_DEBUG_UART_LH77790)
