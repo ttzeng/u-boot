@@ -237,6 +237,10 @@ config WDT_MTK
 	  The watchdog timer is stopped when initialized.
 	  It performs full SoC reset.
 
+config WDT_NETSTART
+	bool "Support the DS1819 watchdog timer on NETStart! board"
+	depends on WDT && PLATFORM_NETSTART
+
 config WDT_NPCM
 	bool "Nuvoton watchdog timer support"
 	depends on WDT && ARCH_NPCM

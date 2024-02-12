@@ -30,6 +30,10 @@ void main(int argc, char *const argv[])
     }
 }
 
+void schedule(void)
+{
+}
+
 void* malloc(int size)
 {
     static long free_mem_ptr = (long)unzip_buffer + SIZE_GZIP_BUFFER;

@@ -2,6 +2,7 @@
 #include <asm/io.h>
 #include <asm/global_data.h>
 #include <asm/arch/hardware.h>
+#include <hang.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -48,7 +49,11 @@ int board_init(void)
 #ifndef CONFIG_SYSRESET
 void reset_cpu(void)
 {
+#if defined(CONFIG_WDT_NETSTART)
+    hang();
+#else
     void (*rom_start)(void) = (void (*)(void))CFG_SYS_FLASH_BASE;
     (*rom_start)();
+#endif
 }
 #endif

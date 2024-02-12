@@ -28,9 +28,12 @@ config PLATFORM_NETSTART
     select S3C4510_ETH
     select SYS_I2C_S3C4510
     select RTC_DS1672
+    select WDT
+    select WDT_NETSTART
     select CMD_CACHE
     select CMD_DATE
     select CMD_I2C
+    select CMD_WDT
 endchoice
 
 config MONITOR_IS_IN_RAM
