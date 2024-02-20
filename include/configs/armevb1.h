@@ -1,7 +1,7 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
-#define CFG_SYS_TIMER_RATE          (CONFIG_SYS_CLK_FREQ >> 5)
+#define CFG_SYS_TIMER_RATE          CONFIG_SYS_CLK_FREQ
 #define CFG_SYS_FLASH_ERASE_TOUT    3000
 #define CFG_SYS_FLASH_WRITE_TOUT    3000
 

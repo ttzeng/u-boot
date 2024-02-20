@@ -231,6 +231,11 @@
 #define CT_CWR_RDBACK_CNT2  (1 << 3)
 #define CT_CWR_RDBACK_STATUS (1 << 4)
 #define CT_CWR_RDBACK_COUNT (1 << 5)
+#define CT_STATUS_BCD       (1 << 0)
+#define CT_STATUS_MODE      (7 << 1)
+#define CT_STATUS_RW        (3 << 4)
+#define CT_STATUS_NULL_COUNT (1 << 6)
+#define CT_STATUS_OUT       (1 << 7)
 
 #define WDT_BASE        0xffffac00          /* Watchdog Timer Register */
 #define WDCTLR          (WDT_BASE + 0x30)   /* Watchdog Control Register */
